@@ -1,20 +1,4 @@
-void initHardware(){
-	// enable eeprom wait in avr/eeprom.h functions
-	SPMCSR &= ~SELFPRGEN;
 
-	loadPenPosFromEE();
-
-	pinMode(enableRotMotor, OUTPUT);
-	pinMode(enablePenMotor, OUTPUT);
-
-	rotMotor.setMaxSpeed(2000.0);
-	rotMotor.setAcceleration(10000.0);
-	penMotor.setMaxSpeed(2000.0);
-	penMotor.setAcceleration(10000.0);
-	motorsOff();
-	penServo.attach(servoPin);
-	penServo.write(penState);
-}
 
 void inline loadPenPosFromEE() {
 	penUpPos = eeprom_read_word(penUpPosEEAddress);
@@ -132,4 +116,36 @@ void moveToDestination() {
 
 void setprgButtonState(){
 	prgButtonState = 1;
+}
+
+void initHardware(){
+  // enable eeprom wait in avr/eeprom.h functions
+  SPMCSR &= ~SELFPRGEN;
+
+  loadPenPosFromEE();
+
+  pinMode(enableRotMotor, OUTPUT);
+  pinMode(enablePenMotor, OUTPUT);
+  pinMode(M0, OUTPUT);
+  pinMode(M1, OUTPUT);
+  pinMode(M2, OUTPUT);
+  pinMode(A3, OUTPUT);
+
+  // stepper controller 16th steps
+  digitalWrite(M0, HIGH); 
+  digitalWrite(M1, HIGH); 
+  digitalWrite(M2, HIGH);
+
+    digitalWrite(A3, HIGH);
+
+  rotMotor.setMaxSpeed(2000.0);
+  rotMotor.setAcceleration(10000.0);
+  penMotor.setMaxSpeed(2000.0);
+  penMotor.setAcceleration(10000.0);
+  motorsOff();
+  penServo.attach(servoPin);
+  penServo.write(penState);
+
+
+  
 }
