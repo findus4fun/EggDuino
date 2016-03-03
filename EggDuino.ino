@@ -23,7 +23,7 @@
 
 #include "AccelStepper.h" // nice lib from http://www.airspayce.com/mikem/arduino/AccelStepper/
 //#include <Servo.h>
-#include <VarSpeedServo.h>
+#include "VarSpeedServo.h"
 #include "SerialCommand.h" //nice lib from Stefan Rado, https://github.com/kroimon/Arduino-SerialCommand
 #include <avr/eeprom.h>
 #include "button.h"
