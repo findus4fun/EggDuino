@@ -3,6 +3,8 @@
 void inline loadPenPosFromEE() {
 	penUpPos = eeprom_read_word(penUpPosEEAddress);
 	penDownPos = eeprom_read_word(penDownPosEEAddress);
+  servoRateUp = eeprom_read_word(servoRateUpEEAddress);
+  servoRateDown = eeprom_read_word(servoRateDownEEAddress);
 	penState = penUpPos;
 }
 
@@ -13,6 +15,16 @@ void inline storePenUpPosInEE() {
 void inline storePenDownPosInEE() {
 	eeprom_update_word(penDownPosEEAddress, penDownPos);
 }
+
+void inline storeServoRateUpInEE() {
+  eeprom_update_word(servoRateUpEEAddress, servoRateUp);
+}
+
+
+void inline storeServoRateDownInEE() {
+  eeprom_update_word(servoRateDownEEAddress, servoRateDown);
+}
+
 
 void inline sendAck(){
 	Serial.print("OK\r\n");

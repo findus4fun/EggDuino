@@ -116,12 +116,12 @@ void setPen(){
 		cmd = atoi(arg);
 		switch (cmd) {
 			case 0:
-				penServo.write(penUpPos);
+				penServo.write(penUpPos,servoRateUp);
 				penState=penUpPos;
 				break;
 
 			case 1:
-				penServo.write(penDownPos);
+				penServo.write(penDownPos,servoRateDown);
 				penState=penDownPos;
 				break;
 
@@ -164,10 +164,10 @@ void togglePen(){
 
 void doTogglePen() {
 	if (penState==penUpPos) {
-		penServo.write(penDownPos);
+		penServo.write(penDownPos, servoRateDown);
 		penState=penDownPos;
 	} else   {
-		penServo.write(penUpPos);
+		penServo.write(penUpPos, servoRateUp);
 		penState=penUpPos;
 	}
 }
@@ -238,11 +238,14 @@ void stepperModeConfigure(){
 			case 7: //rotMax=value;    ignored
 				sendAck();
 				break;
-			case 11: servoRateUp=value;
+			
+			case 11: servoRateDown=map(value,0,100,0,255);
+         storeServoRateDownInEE();
 				 sendAck();
-				 break;
-			case 12: servoRateDown=value;
-				 sendAck();
+        case 12: servoRateUp=map(value,0,100,0,255);
+         storeServoRateUpInEE();
+         sendAck();
+         break;
 				 break;
 			default:
 				 sendError();

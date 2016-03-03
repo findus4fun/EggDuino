@@ -1,3 +1,5 @@
+
+
 /* Eggduino-Firmware by Joachim Cerny, 2014
 
    Thanks for the nice libs ACCELSTEPPER and SERIALCOMMAND, which made this project much easier.
@@ -20,7 +22,8 @@
  */
 
 #include "AccelStepper.h" // nice lib from http://www.airspayce.com/mikem/arduino/AccelStepper/
-#include <Servo.h>
+//#include <Servo.h>
+#include <VarSpeedServo.h>
 #include "SerialCommand.h" //nice lib from Stefan Rado, https://github.com/kroimon/Arduino-SerialCommand
 #include <avr/eeprom.h>
 #include "button.h"
@@ -56,11 +59,15 @@
 
 #define penUpPosEEAddress ((uint16_t *)0)
 #define penDownPosEEAddress ((uint16_t *)2)
+#define servoRateUpEEAddress ((uint16_t *)4)
+#define servoRateDownEEAddress ((uint16_t *)6)
 
 //make Objects
 AccelStepper rotMotor(1, step1, dir1);
 AccelStepper penMotor(1, step2, dir2);
-Servo penServo;
+//Servo penServo;
+VarSpeedServo penServo;
+
 SerialCommand SCmd;
 //create Buttons
 #ifdef prgButton
@@ -77,8 +84,8 @@ int penMin=0;
 int penMax=0;
 int penUpPos=5;  //can be overwritten from EBB-Command SC
 int penDownPos=20; //can be overwritten from EBB-Command SC
-int servoRateUp=0; //from EBB-Protocol not implemented on machine-side
-int servoRateDown=0; //from EBB-Protocol not implemented on machine-side
+int servoRateUp=128; //from EBB-Protocol not implemented on machine-side
+int servoRateDown=128; //from EBB-Protocol not implemented on machine-side
 long rotStepError=0;
 long penStepError=0;
 int penState=penUpPos;
