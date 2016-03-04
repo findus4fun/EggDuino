@@ -116,12 +116,12 @@ void setPen(){
 		cmd = atoi(arg);
 		switch (cmd) {
 			case 0:
-				penServo.write(penUpPos,servoRateUp);
+				penServo.write(penUpPos);
 				penState=penUpPos;
 				break;
 
 			case 1:
-				penServo.write(penDownPos,servoRateDown);
+				penServo.write(penDownPos);
 				penState=penDownPos;
 				break;
 
@@ -164,10 +164,10 @@ void togglePen(){
 
 void doTogglePen() {
 	if (penState==penUpPos) {
-		penServo.write(penDownPos, servoRateDown);
+		penServo.write(penDownPos);
 		penState=penDownPos;
 	} else   {
-		penServo.write(penUpPos, servoRateUp);
+		penServo.write(penUpPos);
 		penState=penUpPos;
 	}
 }

@@ -22,8 +22,7 @@
  */
 
 #include "AccelStepper.h" // nice lib from http://www.airspayce.com/mikem/arduino/AccelStepper/
-//#include <Servo.h>
-#include "VarSpeedServo.h"
+#include <Servo.h>
 #include "SerialCommand.h" //nice lib from Stefan Rado, https://github.com/kroimon/Arduino-SerialCommand
 #include <avr/eeprom.h>
 #include "button.h"
@@ -65,8 +64,8 @@
 //make Objects
 AccelStepper rotMotor(1, step1, dir1);
 AccelStepper penMotor(1, step2, dir2);
-//Servo penServo;
-VarSpeedServo penServo;
+Servo penServo;
+
 
 SerialCommand SCmd;
 //create Buttons
