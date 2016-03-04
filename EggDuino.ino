@@ -27,7 +27,7 @@
 #include <avr/eeprom.h>
 #include "button.h"
 
-#define initSting "EBBv13_and_above Protocol emulated by Eggduino-Firmware V1.6a"
+#define initSting "EBBv13_and_above Protocol emulated by Eggduino-Firmware V1.6b"
 //Rotational Stepper:
 #define step1 5
 #define dir1 4
@@ -85,6 +85,7 @@ int penUpPos=5;  //can be overwritten from EBB-Command SC
 int penDownPos=20; //can be overwritten from EBB-Command SC
 int servoRateUp=128; 
 int servoRateDown=128; 
+int servoCurrentPos;
 long rotStepError=0;
 long penStepError=0;
 int penState=penUpPos;
@@ -97,6 +98,15 @@ float rotSpeed=0;
 float penSpeed=0; // these are local variables for Function SteppermotorMove-Command, but for performance-reasons it will be initialized here
 boolean motorsEnabled = 0;
 
+
+// Generally, you should use "unsigned long" for variables that hold time
+// The value will quickly become too large for an int to store
+unsigned long previousMillis = 0;        // will store last time LED was updated
+
+// constants won't change :
+const long interval = 15;           // interval at which to blink (milliseconds)
+
+
 void setup() {   
 	Serial.begin(9600);
 	makeComInterface();
@@ -104,10 +114,20 @@ void setup() {
 }
 
 void loop() {
+
+  unsigned long currentMillis = millis();
+  
+  if (currentMillis - previousMillis >= (unsigned long)interval) {
+    // save the last time 
+    previousMillis = currentMillis;
+    moveServo();
+  }
+
+  if (servoCurrentPos == penState) {
 	moveOneStep();
 
 	SCmd.readSerial();
-
+  }
 #ifdef penToggleButton
 	penToggle.check();
 #endif

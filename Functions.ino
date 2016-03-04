@@ -15,8 +15,15 @@ void makeComInterface(){
 	SCmd.addCommand("SL",setLayer);
 	SCmd.addCommand("QL",queryLayer);
 	SCmd.addCommand("QP",queryPen);
+ SCmd.addCommand("QR",queryRate);
 	SCmd.addCommand("QB",queryButton);  //"PRG" Button,
 	SCmd.setDefaultHandler(unrecognized); // Handler for command that isn't matched (says "What?")
+}
+
+void queryRate() {
+
+  Serial.print(String(servoRateDown)+"\r\n");
+  sendAck();
 }
 
 void queryPen() {
@@ -30,7 +37,10 @@ void queryPen() {
 }
 
 void queryButton() {
-	Serial.print(String(prgButtonState) +"\r\n");
+	//Serial.print(String(prgButtonState) +"\r\n");
+ char state;
+ state='0';
+ Serial.print(String(state) +"\r\n");
 	sendAck();
 	prgButtonState = 0;
 }
@@ -116,12 +126,12 @@ void setPen(){
 		cmd = atoi(arg);
 		switch (cmd) {
 			case 0:
-				penServo.write(penUpPos);
+				//penServo.write(penUpPos);
 				penState=penUpPos;
 				break;
 
 			case 1:
-				penServo.write(penDownPos);
+				//penServo.write(penDownPos);
 				penState=penDownPos;
 				break;
 
@@ -164,10 +174,10 @@ void togglePen(){
 
 void doTogglePen() {
 	if (penState==penUpPos) {
-		penServo.write(penDownPos);
+		//penServo.write(penDownPos);
 		penState=penDownPos;
 	} else   {
-		penServo.write(penUpPos);
+		//penServo.write(penUpPos);
 		penState=penUpPos;
 	}
 }
@@ -239,10 +249,10 @@ void stepperModeConfigure(){
 				sendAck();
 				break;
 			
-			case 11: servoRateDown=map(value,0,100,0,255);
+			case 11: servoRateDown=value;
          storeServoRateDownInEE();
 				 sendAck();
-        case 12: servoRateUp=map(value,0,100,0,255);
+        case 12: servoRateUp=value;
          storeServoRateUpInEE();
          sendAck();
          break;
@@ -265,3 +275,16 @@ void unrecognized(const char *command){
 void ignore(){
 	sendAck();
 }
+
+void moveServo() {
+  
+  if (servoCurrentPos > penState) {
+    servoCurrentPos--;
+  } else if (servoCurrentPos < penState) {
+    servoCurrentPos++;
+  }
+  
+  if (servoCurrentPos != penState)
+    penServo.write(servoCurrentPos)  ; 
+}
+

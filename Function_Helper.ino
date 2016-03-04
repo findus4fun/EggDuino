@@ -155,9 +155,9 @@ void initHardware(){
   penMotor.setMaxSpeed(2000.0);
   penMotor.setAcceleration(10000.0);
   motorsOff();
-  penServo.attach(servoPin,1450,1500);
+  penServo.attach(servoPin);
   penServo.write(penState);
-
+  servoCurrentPos=penState;
 
   
 }
