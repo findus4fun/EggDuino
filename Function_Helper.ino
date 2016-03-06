@@ -157,7 +157,7 @@ void initHardware(){
   motorsOff();
   penServo.attach(servoPin);
   penServo.write(penState);
-  servoCurrentPos=penState;
+
 
   
 }

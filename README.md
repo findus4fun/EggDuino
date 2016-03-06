@@ -1,3 +1,7 @@
+Var speed works!
+Changes against original version:
+used VarSpeedServo instead of Servo library to implement servoRateUp and servoRateDown
+
 
 Eggduino
 ====
